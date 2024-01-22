@@ -1,0 +1,23 @@
+label{
+    display: block;
+    /* width: 40rem; */
+    max-width: 40rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+}
+
+h4{
+    display: inline;
+    margin-right: 1rem;
+}
+
+input {
+    height: 2rem;
+}
+
+@media (max-width: 400px) {
+    label{
+        grid-template-columns: 1fr;
+    }
+}

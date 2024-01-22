@@ -1,0 +1,9 @@
+*,*::after,*::before{
+  box-sizing: inherit;
+}
+
+html {
+  margin: 0px;
+  padding: 0px;
+  font-family: 'Oxygen', sans-serif;
+}

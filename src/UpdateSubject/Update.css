@@ -1,0 +1,17 @@
+#updateForm{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+}
+
+form input{
+    height: 1.5rem;
+}
+
+form label{
+    font-size: 0.8rem;
+}
+
+#buttons{
+    margin-top: 1rem;
+}
