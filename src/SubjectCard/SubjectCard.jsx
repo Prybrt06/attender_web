@@ -2,7 +2,6 @@
 import Cookies from "js-cookie";
 import "./Style.css";
 
-import { Link } from "react-router-dom";
 import { useState } from "react";
 import UpdateSubject from "../UpdateSubject/UpdateSubject";
 
@@ -11,25 +10,31 @@ function SubjectCard({ subject, setupdHandler }) {
   const [deleteState, setDeleteState] = useState(false);
 
   const markPresent = async (attended) => {
-    const token = Cookies.get("token");
-    const res = await fetch(
-      `https://attender-backend.onrender.com/subject/markAttendance/${subject.id}`,
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ isAttended: attended }),
-      }
+    const response = await window.confirm(
+      `Do you want to mark the attendance for the subject ${subject.name}`
     );
 
-    if (res.status == 201) {
-      setupdHandler((prev) => !prev);
-      alert("Attendance marked successfully");
-    } else {
-      alert("Unable to mark the attendance please try again");
+    if (response) {
+      const token = Cookies.get("token");
+      const res = await fetch(
+        `https://attender-backend.onrender.com/subject/markAttendance/${subject.id}`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ isAttended: attended }),
+        }
+      );
+
+      if (res.status == 201) {
+        setupdHandler((prev) => !prev);
+        alert("Attendance marked successfully");
+      } else {
+        alert("Unable to mark the attendance please try again");
+      }
     }
   };
 

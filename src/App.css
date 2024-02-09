@@ -4,6 +4,9 @@
 
 body {
   height: 96vh;
+  margin: 0 auto;
+  padding: 0 1rem;
+  max-width: 1600px;
   /* background-image: url("./assets/bg.jpeg"); */
   /* background-repeat: no-repeat; */
   /* background-size:cover; */
