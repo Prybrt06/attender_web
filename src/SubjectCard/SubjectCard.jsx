@@ -4,14 +4,18 @@ import "./Style.css";
 
 import { useState } from "react";
 import UpdateSubject from "../UpdateSubject/UpdateSubject";
+import InfoCard from "../InfoCard/InfoCard";
 
 function SubjectCard({ subject, setupdHandler }) {
   // let isAttended = false;
-  const [deleteState, setDeleteState] = useState(false);
+  const [state, setState] = useState(1);
+  // 1 - main state
+  // 2 - update state
+  // 3 - info state
 
   const markPresent = async (attended) => {
-    const response = await window.confirm(
-      `Do you want to mark the attendance for the subject ${subject.name}`
+    const response = window.confirm(
+      `Do you want to mark the attendance for the subject ${subject.name}`,
     );
 
     if (response) {
@@ -26,7 +30,7 @@ function SubjectCard({ subject, setupdHandler }) {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({ isAttended: attended }),
-        }
+        },
       );
 
       if (res.status == 201) {
@@ -39,8 +43,8 @@ function SubjectCard({ subject, setupdHandler }) {
   };
 
   const deleteSubject = async () => {
-    const response = await window.confirm(
-      `Do you want to delete the subject ${subject.name}`
+    const response = window.confirm(
+      `Do you want to delete the subject ${subject.name}`,
     );
 
     if (response) {
@@ -52,7 +56,7 @@ function SubjectCard({ subject, setupdHandler }) {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       if (res.status == 201) {
@@ -73,27 +77,40 @@ function SubjectCard({ subject, setupdHandler }) {
 
   return (
     <div className="subject">
-      {!deleteState ? (
+      {state === 1 ? (
         <div className="info_div">
           <section id="info">
             <h3>{subject?.name}</h3>
-            <h4
-              style={{
-                color:
-                  attendance >= 75
-                    ? "green"
-                    : attendance >= 50
+            <div>
+              <button
+                onClick={() => {
+                  setState(3);
+                }}
+              >
+                Info
+              </button>
+            </div>
+          </section>
+          <h4
+            style={{
+              color:
+                attendance >= 75
+                  ? "green"
+                  : attendance >= 50
                     ? "orange"
                     : "red",
-              }}
-            >
-              {isNaN(attendance) ? 0 : attendance} %
-            </h4>
-          </section>
+            }}
+            className="percent"
+          >
+            {isNaN(attendance) ? 0 : attendance} %
+          </h4>
           <ul>
             <li>Total : {subject?.totalClasses}</li>
             <li>Attended : {subject?.attendedClasses}</li>
-            <li>Missed : {subject?.totalClasses - subject?.attendedClasses}</li>
+            <li>
+              Missed :{" "}
+              {subject?.totalClasses - subject?.attendedClasses}
+            </li>
           </ul>
           <h5>{subject?.subjectCode}</h5>
           <section id="buttons">
@@ -122,19 +139,21 @@ function SubjectCard({ subject, setupdHandler }) {
             </button>
             <button
               onClick={() => {
-                setDeleteState(true);
+                setState(2);
               }}
             >
               Update
             </button>
           </section>{" "}
         </div>
-      ) : (
+      ) : state === 2 ? (
         <UpdateSubject
           subject={subject}
-          setDeleteState={setDeleteState}
+          setState={setState}
           setupdHandler={setupdHandler}
         />
+      ) : (
+        <InfoCard subject={subject} setState={setState} />
       )}
     </div>
   );

@@ -4,11 +4,11 @@ import "./Update.css";
 import { useState } from "react";
 import Cookies from "js-cookie";
 
-const UpdateSubject = ({ subject, setDeleteState, setupdHandler }) => {
+const UpdateSubject = ({ subject, setState, setupdHandler }) => {
   const [subjectName, setSubjectName] = useState(subject.name);
   const [totalClasses, setTotalClasses] = useState(subject.totalClasses);
   const [attendedClasses, setAttendedClasses] = useState(
-    subject.attendedClasses
+    subject.attendedClasses,
   );
   const [subjectCode, setSubjectCode] = useState(subject.subjectCode);
 
@@ -16,13 +16,13 @@ const UpdateSubject = ({ subject, setDeleteState, setupdHandler }) => {
 
   const updateSubject = async () => {
     const token = Cookies.get("token");
-    const response = await window.confirm(
-      `Do you want to update the subject ${subject.name}`
+    const response = window.confirm(
+      `Do you want to update the subject ${subjectName}`,
     );
 
     if (response) {
       const result = await fetch(
-        `https://attender-backend.onrender.com/subject/update/${subject.id}`,
+        `https://attender-backend.onrender.com/subject/update/${subject?.id}`,
         {
           method: "PUT",
           headers: {
@@ -36,12 +36,12 @@ const UpdateSubject = ({ subject, setDeleteState, setupdHandler }) => {
             attendedClasses: parseInt(attendedClasses),
             totalClasses: parseInt(totalClasses),
           }),
-        }
+        },
       );
 
       if (result.status == 201) {
         navigate("/");
-        setDeleteState(false);
+        setState(1);
         setupdHandler((prev) => !prev);
         alert("Subject updated successfully");
       } else {
@@ -94,7 +94,7 @@ const UpdateSubject = ({ subject, setDeleteState, setupdHandler }) => {
         <button onClick={updateSubject}>Update</button>
         <button
           onClick={() => {
-            setDeleteState(false);
+            setState(1);
           }}
         >
           Cancel
