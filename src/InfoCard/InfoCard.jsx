@@ -26,7 +26,7 @@ const InfoCard = ({ subject, setState }) => {
 
             console.log(json);
             const infos = json.updates;
-            setInfos(infos);
+            setInfos(infos.reverse());
         }
     };
 
